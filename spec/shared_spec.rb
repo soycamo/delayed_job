@@ -1,4 +1,4 @@
-require File.expand_path('../../../../spec/sample_jobs', __FILE__)
+require 'sample_jobs'
 
 require 'active_support/core_ext'
 

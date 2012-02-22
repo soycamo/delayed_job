@@ -100,6 +100,8 @@ module Psych
           id = payload["attributes"][klass.primary_key]
           begin
             if ActiveRecord::VERSION::MAJOR == 3
+              # Should be working this way ONLY for DJ records,
+              # and super for non-DJ records.
               klass.unscoped.find(id)
             else # Rails 2
               klass.with_exclusive_scope { klass.find(id) }

@@ -38,4 +38,11 @@ describe "YAML" do
   it "should not throw an uninitialized constant Syck::Syck when using YAML.load with poorly formed yaml" do
     lambda { YAML.load(YAML.dump("foo: *bar"))}.should_not raise_error
   end
+
+  it "should not return a Delayed::DeserializationError when using YAML.load_file for non-DJ objects" do
+    pending
+    lambda {
+      YAML.load_file(File.expand_path('spec/fixtures/bad_alias.yml'))
+    }.should_not raise_error
+  end
 end
