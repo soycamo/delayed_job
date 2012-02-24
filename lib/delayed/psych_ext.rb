@@ -91,7 +91,10 @@ module Psych
       end
       
       def visit_Psych_Nodes_Mapping_with_class(object)
+        log = Logger.new(STDOUT)
         return revive(Psych.load_tags[object.tag], object) if Psych.load_tags[object.tag]
+
+        log.debug object 
 
         case object.tag
         when /^!ruby\/ActiveRecord:(.+)$/
@@ -100,14 +103,13 @@ module Psych
           id = payload["attributes"][klass.primary_key]
           begin
             if ActiveRecord::VERSION::MAJOR == 3
-              # Should be working this way ONLY for DJ records,
-              # and super for non-DJ records.
               klass.unscoped.find(id)
             else # Rails 2
               klass.with_exclusive_scope { klass.find(id) }
             end
           rescue ActiveRecord::RecordNotFound
-            raise Delayed::DeserializationError
+            visit_Psych_Nodes_Mapping_without_class(object)
+            #raise Delayed::DeserializationError
           end
         when /^!ruby\/Mongoid:(.+)$/
           klass = resolve_class($1)

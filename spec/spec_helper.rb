@@ -33,6 +33,10 @@ ActiveRecord::Schema.define do
     table.string :text
     table.boolean :scoped, :default => true
   end
+  create_table :cats, :force => true do |table|
+    table.string :name
+    table.string :breed
+  end
 end
 
 class Story < ActiveRecord::Base

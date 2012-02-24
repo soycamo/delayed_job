@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'active_record'
-class Cat < ActiveRecord::Base; end
 
+class Cat < ActiveRecord::Base; end
 
 describe "YAML" do
   it "should autoload classes" do
@@ -43,8 +43,7 @@ describe "YAML" do
   end
 
   it "should return a normal ActiveRecord object when using YAML.load_file for non-DJ objects" do
-    lambda {
-      YAML.load_file(File.expand_path('spec/fixtures/cat.yml'))
-    }.should be_a Cat
+    cat = YAML.load_file('spec/fixtures/cat.yml')
+    cat.should be_a Cat
   end
 end

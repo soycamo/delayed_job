@@ -6,6 +6,8 @@ module Delayed
       end
 
       module ClassMethods
+        LOG = Logger.new(STDOUT)
+
         # Add a job to the queue
         def enqueue(*args)
           options = {
@@ -26,6 +28,7 @@ module Delayed
 
           if Delayed::Worker.delay_jobs
             self.new(options).tap do |job|
+              LOG.debug job
               Delayed::Worker.lifecycle.run_callbacks(:enqueue, job) do
                 job.hook(:enqueue)
                 job.save
@@ -113,7 +116,8 @@ module Delayed
           method = payload_object.method(name)
           method.arity == 0 ? method.call : method.call(self, *args)
         end
-      rescue DeserializationError
+      rescue DeserializationError => e
+        LOG.debug e
         # do nothing
       end
 

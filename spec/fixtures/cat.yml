@@ -1,8 +1,5 @@
 --- !ruby/ActiveRecord:Cat
 attributes:
   id: '1'
-  name: Whiskers 
-  coat: short  
+  name: Whimsy
   breed: !!null 
-  gender: Female
-  birthday: '2010-01-01 18:29:49.851675'
