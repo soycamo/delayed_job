@@ -1,4 +1,7 @@
 require 'spec_helper'
+require 'active_record'
+class Cat < ActiveRecord::Base; end
+
 
 describe "YAML" do
   it "should autoload classes" do
@@ -39,10 +42,9 @@ describe "YAML" do
     lambda { YAML.load(YAML.dump("foo: *bar"))}.should_not raise_error
   end
 
-  it "should not return a Delayed::DeserializationError when using YAML.load_file for non-DJ objects" do
-    pending
+  it "should return a normal ActiveRecord object when using YAML.load_file for non-DJ objects" do
     lambda {
-      YAML.load_file(File.expand_path('spec/fixtures/bad_alias.yml'))
-    }.should_not raise_error
+      YAML.load_file(File.expand_path('spec/fixtures/cat.yml'))
+    }.should be_a Cat
   end
 end
